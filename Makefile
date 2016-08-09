@@ -1,15 +1,15 @@
 TOP_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CODK_SW_URL := https://github.com/01org/CODK-A-Software.git
-CODK_SW_DIR := $(TOP_DIR)/arduino101_software
+CODK_SW_DIR := $(TOP_DIR)/software
 CODK_SW_TAG ?= master
 CODK_FW_URL := https://github.com/01org/CODK-A-Firmware.git
-CODK_FW_DIR := $(TOP_DIR)/arduino101_firmware
+CODK_FW_DIR := $(TOP_DIR)/firmware
 CODK_FW_TAG ?= master
 CODK_BL_URL := https://github.com/01org/CODK-A-Bootloader.git
 CODK_BL_DIR := $(CODK_FW_DIR)/bsp/bootable/bootloader
 CODK_BL_TAG ?= master
 CODK_FLASHPACK_URL := https://github.com/01org/CODK-A-Flashpack.git
-CODK_FLASHPACK_DIR := $(TOP_DIR)/arduino101_flashpack
+CODK_FLASHPACK_DIR := $(TOP_DIR)/flashpack
 CODK_FLASHPACK_TAG ?= master
 
 CODK_DIR ?= $(TOP_DIR)
