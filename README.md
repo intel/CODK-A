@@ -13,6 +13,7 @@
 mkdir CODK && cd $_
 git clone https://github.com/01org/CODK-A.git
 cd CODK-A
+make clone
 sudo make install-dep
 make setup
 ```
