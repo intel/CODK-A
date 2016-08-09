@@ -83,3 +83,12 @@ clean-firmware:
 
 clean-software:
 	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) clean-all
+
+debug-server:
+	$(CODK_FLASHPACK_DIR)/bin/openocd.l64 -f $(CODK_FLASHPACK_DIR)/scripts/interface/ftdi/flyswatter2.cfg -f $(CODK_FLASHPACK_DIR)/scripts/board/quark_se.cfg
+
+debug-firmware:
+	gdb $(TOP_DIR)/out/current/firmware/quark.elf
+
+debug-software:
+	$(CODK_SW_DIR)/arc32/bin/arc-elf32-gdb $(SWPROJ_DIR)/arc-debug.elf
