@@ -54,7 +54,7 @@ compile-firmware:
 	$(MAKE) setup image -C $(FWPROJ_DIR)
 
 compile-software:
-	$(MAKE) -C $(SWPROJ_DIR) compile
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) compile
 
 upload: upload-dfu
 
@@ -65,7 +65,7 @@ upload-firmware-dfu:
 	cd $(CODK_FLASHPACK_DIR) && ./flash_dfu.sh
 
 upload-software-dfu:
-	$(MAKE) -C $(SWPROJ_DIR) upload
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) upload
 
 upload-jtag: upload-firmware-jtag upload-software-jtag
 
@@ -82,4 +82,4 @@ clean-firmware:
 	-rm -rf out pub flashpack.zip
 
 clean-software:
-	$(MAKE) -C $(SWPROJ_DIR) clean-all
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) clean-all
