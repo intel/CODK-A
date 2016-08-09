@@ -25,7 +25,7 @@ install-dep: check-root
 	$(MAKE) install-dep -C $(CODK_SW_DIR)
 	$(MAKE) one_time_setup -C $(FWPROJ_DIR)
 
-setup: clone firmware-setup software-setup
+setup: firmware-setup software-setup
 
 clone: $(CODK_SW_DIR) $(CODK_FW_DIR) $(CODK_BL_DIR) $(CODK_FLASHPACK_DIR)
 
