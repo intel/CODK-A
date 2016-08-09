@@ -36,4 +36,15 @@ make setup
 - Both: `make upload-jtag`
 
 ### Debug
-- Coming soon
+Connect JTAG and open three terminal tabs
+
+##### Tab 1: Debug Server
+`make debug-server`
+
+##### Tab 2: Firmware
+`make debug-firmware`    
+`(gdb) target remote localhost:3334`
+
+##### Tab 3: Software
+`make debug-software`    
+`(gdb) target remote localhost:3333`
