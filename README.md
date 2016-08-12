@@ -16,6 +16,7 @@ cd CODK-A
 make clone
 sudo make install-dep
 make setup
+export CODK_DIR=$(pwd)
 ```
 
 ### Compile
@@ -34,6 +35,8 @@ make setup
 - Firmware: `make upload-firmware-jtag`
 - Software: `make upload-software-jtag`
 - Both: `make upload-jtag`
+
+Default app blinks the pin-13 LED on Arduino 101 board
 
 ### Debug
 Connect JTAG and open three terminal tabs
