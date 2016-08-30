@@ -1,20 +1,20 @@
 TOP_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-CODK_SW_URL := https://github.com/01org/CODK-A-Software.git
-CODK_SW_DIR := $(TOP_DIR)/software
-CODK_SW_TAG ?= master
-CODK_FW_URL := https://github.com/01org/CODK-A-Firmware.git
-CODK_FW_DIR := $(TOP_DIR)/firmware
-CODK_FW_TAG ?= master
+CODK_ARC_URL := https://github.com/01org/CODK-A-ARC.git
+CODK_ARC_DIR := $(TOP_DIR)/arc
+CODK_ARC_TAG ?= master
+CODK_X86_URL := https://github.com/01org/CODK-A-X86.git
+CODK_X86_DIR := $(TOP_DIR)/x86
+CODK_X86_TAG ?= master
 CODK_BL_URL := https://github.com/01org/CODK-A-Bootloader.git
-CODK_BL_DIR := $(CODK_FW_DIR)/bsp/bootable/bootloader
+CODK_BL_DIR := $(CODK_X86_DIR)/bsp/bootable/bootloader
 CODK_BL_TAG ?= master
 CODK_FLASHPACK_URL := https://github.com/01org/CODK-A-Flashpack.git
 CODK_FLASHPACK_DIR := $(TOP_DIR)/flashpack
 CODK_FLASHPACK_TAG ?= master
 
 CODK_DIR ?= $(TOP_DIR)
-FWPROJ_DIR ?= $(CODK_FW_DIR)/projects/arduino101/
-SWPROJ_DIR ?= $(CODK_SW_DIR)/examples/Blink/
+X86_PROJ_DIR ?= $(CODK_X86_DIR)/projects/arduino101/
+ARC_PROJ_DIR ?= $(CODK_ARC_DIR)/examples/Blink/
 
 help:
 	
@@ -22,18 +22,19 @@ check-root:
 	@if [ `whoami` != root ]; then echo "Please run as sudoer/root" && exit 1 ; fi
 
 install-dep: check-root
-	$(MAKE) install-dep -C $(CODK_SW_DIR)
-	$(MAKE) one_time_setup -C $(FWPROJ_DIR)
+	$(MAKE) install-dep -C $(CODK_ARC_DIR)
+	$(MAKE) one_time_setup -C $(X86_PROJ_DIR)
 
-setup: firmware-setup software-setup
+setup: x86-setup arc-setup
 
-clone: $(CODK_SW_DIR) $(CODK_FW_DIR) $(CODK_BL_DIR) $(CODK_FLASHPACK_DIR)
+clone: $(CODK_ARC_DIR) $(CODK_X86_DIR) $(CODK_BL_DIR) $(CODK_FLASHPACK_DIR)
 
-$(CODK_SW_DIR):
-	git clone -b $(CODK_SW_TAG) $(CODK_SW_URL) $(CODK_SW_DIR)
+$(CODK_ARC_DIR):
+	git clone -b $(CODK_ARC_TAG) $(CODK_ARC_URL) $(CODK_ARC_DIR)
 
-$(CODK_FW_DIR):
-	git clone -b $(CODK_FW_TAG) $(CODK_FW_URL) $(CODK_FW_DIR)
+$(CODK_X86_DIR):
+	git clone -b $(CODK_X86_TAG) $(CODK_X86_URL) $(CODK_X86_DIR)
+	ln -s $(abspath $(CODK_X86_DIR)) $(TOP_DIR)firmware
 
 $(CODK_BL_DIR):
 	git clone -b $(CODK_BL_TAG) $(CODK_BL_URL) $(CODK_BL_DIR)
@@ -41,54 +42,54 @@ $(CODK_BL_DIR):
 $(CODK_FLASHPACK_DIR):
 	git clone -b $(CODK_FLASHPACK_TAG) $(CODK_FLASHPACK_URL) $(CODK_FLASHPACK_DIR)
 
-firmware-setup:
-	@echo "Setting up firmware"
+x86-setup:
+	@echo "Setting up x86"
 
-software-setup:
-	@echo "Setting up software"
-	@$(MAKE) -C $(CODK_SW_DIR) setup
+arc-setup:
+	@echo "Setting up ARC"
+	@$(MAKE) -C $(CODK_ARC_DIR) setup
 
-compile: compile-firmware compile-software
+compile: compile-x86 compile-arc
 
-compile-firmware:
-	$(MAKE) setup image -C $(FWPROJ_DIR)
+compile-x86:
+	$(MAKE) setup image -C $(X86_PROJ_DIR)
 
-compile-software:
-	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) compile
+compile-arc:
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) compile
 
 upload: upload-dfu
 
-upload-dfu: upload-firmware-dfu upload-software-dfu
+upload-dfu: upload-x86-dfu upload-arc-dfu
 
-upload-firmware-dfu:
+upload-x86-dfu:
 	cd $(CODK_FLASHPACK_DIR) && ./create_flasher.sh
 	cd $(CODK_FLASHPACK_DIR) && ./flash_dfu.sh
 
-upload-software-dfu:
-	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) upload
+upload-arc-dfu:
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) upload
 
-upload-jtag: upload-firmware-jtag upload-software-jtag
+upload-jtag: upload-x86-jtag upload-arc-jtag
 
-upload-firmware-jtag:
+upload-x86-jtag:
 	cd $(CODK_FLASHPACK_DIR) && ./create_flasher.sh
 	cd $(CODK_FLASHPACK_DIR) && ./flash_jtag.sh
 
-upload-software-jtag:
+upload-arc-jtag:
 	# To-do
 
-clean: clean-firmware clean-software
+clean: clean-x86 clean-arc
 
-clean-firmware:
+clean-x86:
 	-rm -rf out pub flashpack.zip
 
-clean-software:
-	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SWPROJ_DIR) clean-all
+clean-arc:
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) clean-all
 
 debug-server:
 	$(CODK_FLASHPACK_DIR)/bin/openocd.l64 -f $(CODK_FLASHPACK_DIR)/scripts/interface/ftdi/flyswatter2.cfg -f $(CODK_FLASHPACK_DIR)/scripts/board/quark_se.cfg
 
-debug-firmware:
+debug-x86:
 	gdb $(TOP_DIR)/out/current/firmware/quark.elf
 
-debug-software:
-	$(CODK_SW_DIR)/arc32/bin/arc-elf32-gdb $(SWPROJ_DIR)/arc-debug.elf
+debug-arc:
+	$(CODK_ARC_DIR)/arc32/bin/arc-elf32-gdb $(ARC_PROJ_DIR)/arc-debug.elf

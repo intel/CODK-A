@@ -1,6 +1,7 @@
-/arduino101_firmware/
-/arduino101_flashpack/
-/arduino101_software/
+/x86
+/firmware
+/arc/
+/flashpack/
 /out/
 /flashpack.zip
 .DS_Store

@@ -2,8 +2,8 @@
 
 ### Contents
 
-  - Firmware: Arduino 101 Firmware
-  - Software: Arduino sketches or `*.cpp`
+  - x86: Arduino 101 Firmware
+  - ARC: Arduino sketches or `*.cpp`
 
 ### Supported Platforms
  - Ubuntu 14.04 - 64 bit
@@ -20,20 +20,20 @@ export CODK_DIR=$(pwd)
 ```
 
 ### Compile
-- Firmware: `make compile-firmware`
-- Software: `make compile-software`
+- x86: `make compile-x86`
+- ARC: `make compile-arc`
 - Both: `make compile`
 
 ### Upload
 
 ##### Using USB/DFU
-- Firmware: `make upload-firmware-dfu`
-- Software: `make upload-software-dfu`
+- x86: `make upload-x86-dfu`
+- ARC: `make upload-arc-dfu`
 - Both: `make upload`
 
 ##### Using JTAG
-- Firmware: `make upload-firmware-jtag`
-- Software: `make upload-software-jtag`
+- x86: `make upload-x86-jtag`
+- ARC: `make upload-arc-jtag`
 - Both: `make upload-jtag`
 
 Default app blinks the pin-13 LED on Arduino 101 board
@@ -44,10 +44,10 @@ Connect JTAG and open three terminal tabs
 ##### Tab 1: Debug Server
 `make debug-server`
 
-##### Tab 2: Firmware
-`make debug-firmware`    
+##### Tab 2: x86
+`make debug-x86`    
 `(gdb) target remote localhost:3334`
 
-##### Tab 3: Software
-`make debug-software`    
+##### Tab 3: ARC
+`make debug-arc`    
 `(gdb) target remote localhost:3333`
