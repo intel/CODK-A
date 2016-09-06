@@ -14,7 +14,7 @@ CODK_FLASHPACK_TAG ?= master
 
 CODK_DIR ?= $(TOP_DIR)
 X86_PROJ_DIR ?= $(CODK_X86_DIR)/projects/arduino101/
-ARC_PROJ_DIR ?= $(CODK_ARC_DIR)/examples/Blink/
+ARC_PROJ_DIR ?= $(CODK_ARC_DIR)/examples/ASCIITable/
 
 help:
 	
