@@ -15,6 +15,8 @@ CODK_FLASHPACK_TAG ?= master
 CODK_DIR ?= $(TOP_DIR)
 X86_PROJ_DIR ?= $(CODK_X86_DIR)/projects/arduino101/
 ARC_PROJ_DIR ?= $(CODK_ARC_DIR)/examples/ASCIITable/
+SKETCH       ?= $(ARC_PROJ_DIR)/$(shell basename $(ARC_PROJ_DIR)).ino
+SKETCH_DIR   := $(dir $(SKETCH))
 
 help:
 	
@@ -56,6 +58,9 @@ compile-x86:
 
 compile-arc:
 	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) compile
+
+convert-sketch:
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SKETCH_DIR) convert-sketch SKETCH=$(notdir $(SKETCH))
 
 upload: upload-dfu
 
