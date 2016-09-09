@@ -38,6 +38,11 @@ export CODK_DIR=$(pwd)
 
 Default app blinks the pin-13 LED on Arduino 101 board
 
+#### BLE Firmware
+Curie ODK requires an updated BLE firmware. If you're on a factory version, please update.    
+The script will prompt you to manually reset the board.
+- BLE: `make upload-ble-dfu`
+
 ### Debug
 Connect JTAG and open three terminal tabs
 
