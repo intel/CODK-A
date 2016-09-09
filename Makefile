@@ -11,6 +11,7 @@ CODK_BL_TAG ?= master
 CODK_FLASHPACK_URL := https://github.com/01org/CODK-A-Flashpack.git
 CODK_FLASHPACK_DIR := $(TOP_DIR)/flashpack
 CODK_FLASHPACK_TAG ?= master
+BLE_IMAGE   := $(CODK_FLASHPACK_DIR)/images.dist/firmware/ble_core/imagev3.bin
 
 CODK_DIR ?= $(TOP_DIR)
 X86_PROJ_DIR ?= $(CODK_X86_DIR)/projects/arduino101/
@@ -81,6 +82,9 @@ upload-x86-jtag:
 
 upload-arc-jtag:
 	# To-do
+
+upload-ble-dfu:
+	cd $(CODK_FLASHPACK_DIR) && ./flash_ble_dfu.sh $(BLE_IMAGE)
 
 clean: clean-x86 clean-arc
 
