@@ -27,6 +27,7 @@ check-root:
 install-dep: check-root
 	$(MAKE) install-dep -C $(CODK_ARC_DIR)
 	$(MAKE) one_time_setup -C $(X86_PROJ_DIR)
+	usermod -a -G dialout $(SUDO_USER)
 
 setup: x86-setup arc-setup
 
