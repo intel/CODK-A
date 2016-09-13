@@ -46,7 +46,7 @@ check-root:
 install-dep: check-root
 	$(MAKE) install-dep -C $(CODK_ARC_DIR)
 	$(MAKE) one_time_setup -C $(X86_PROJ_DIR)
-	apt-get purge -y modemmanager
+	dpkg --purge modemmanager
 	usermod -a -G dialout $(SUDO_USER)
 
 setup: x86-setup arc-setup
