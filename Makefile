@@ -102,7 +102,7 @@ upload-x86-jtag:
 	cd $(CODK_FLASHPACK_DIR) && ./flash_jtag.sh
 
 upload-arc-jtag:
-	# To-do
+	cd $(CODK_FLASHPACK_DIR) && ./flash_arc_jtag.sh $(ARC_PROJ_DIR)/arc.bin
 
 upload-ble-dfu:
 	cd $(CODK_FLASHPACK_DIR) && ./flash_ble_dfu.sh $(BLE_IMAGE)
