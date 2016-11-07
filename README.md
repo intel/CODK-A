@@ -41,7 +41,9 @@ export CODK_DIR=$(pwd)
 - ARC: `make upload-arc-jtag`
 - Both: `make upload-jtag`
 
-Default app blinks the pin-13 LED on Arduino 101 board
+Default app prints the ASCII table over the serial port.
+To see the output, connect at 9600 bps to the CDC ACM virtual serial port
+the Arduino 101 shows up under, e.g. `/dev/ttyACM0`.
 
 #### BLE Firmware
 Curie ODK requires an updated BLE firmware. If you're on a factory version, please update.    
