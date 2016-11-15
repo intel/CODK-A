@@ -1,5 +1,10 @@
 # Curie Open Development Kit - A
 
+For Intel Community Support, product questions, or help troubleshooting, visit
+ICS: [https://communities.intel.com/community/tech/intel-curie](https://communities.intel.com/community/tech/intel-curie)
+
+|
+
 ### Contents
 
   - x86: Arduino 101 Firmware
