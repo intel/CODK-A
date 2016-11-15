@@ -84,9 +84,12 @@ compile-arc:
 convert-sketch:
 	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SKETCH_DIR) convert-sketch SKETCH=$(notdir $(SKETCH))
 
+sleepitoff:
+	sleep 10
+
 upload: upload-dfu
 
-upload-dfu: upload-x86-dfu upload-arc-dfu
+upload-dfu: upload-x86-dfu sleepitoff upload-arc-dfu
 
 upload-x86-dfu:
 	cd $(CODK_FLASHPACK_DIR) && ./create_flasher.sh
