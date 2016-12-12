@@ -23,20 +23,27 @@ help:
 	@echo
 	@echo "CODK-A available targets"
 	@echo
-	@echo "convert-sketch  : convert *.ino to *.cpp (SKETCH variable must be set)"
-	@echo "compile-x86     : compile the x86 application in X86_PROJ_DIR"
-	@echo "compile-arc     : compile the ARC application in ARC_PROJ_DIR"
-	@echo "compile         : compile x86 and ARC applications"
-	@echo "upload-x86-dfu  : upload the x86 application (USB cable & dfu-util)"
-	@echo "upload-arc-dfu  : upload the ARC application (USB cable & dfu-util)"
-	@echo "upload          : upload the ARC and x86 applications (USB cable & dfu-util)"
-	@echo "upload-x86-jtag : upload the x86 application (JTAG & OpenOCD)"
-	@echo "upload-arc-jtag : upload the ARC application (JTAG & OpenOCD)"
-	@echo "upload-jtag     : upload the ARC and x86 applications (JTAG & OpenOCD)"
-	@echo "upload-ble-dfu  : upload the Nordic BLE firmware (USB cable & dfu-util)"
-	@echo "debug-server    : start OpenOCD server"
-	@echo "debug-x6        : Debug x86 application with GDB"
-	@echo "debug-arc       : Debug ARC application with GDB"
+	@echo "project            : create new blank project (PROJ_DIR variable must be set)"
+	@echo "convert-sketch     : convert *.ino to *.cpp (SKETCH variable must be set)"
+	@echo "compile-x86        : compile the x86 application in X86_PROJ_DIR"
+	@echo "compile-arc        : compile the ARC application in ARC_PROJ_DIR, with debug"
+	@echo "                     symbols disabled and optimisation flags enabled"
+	@echo "compile-debug-arc  : compile the ARC application in ARC_PROJ_DIR, with debug"
+	@echo "                     symbols enabled and optimisation flags disabled"
+	@echo "compile            : compile x86 and ARC applications, with debug symbols"
+	@echo "                     disabled and optimisation flags enabled"
+	@echo "compile-debug      : compile x86 and ARC applications, with debug symbols"
+	@echo "                     enabled and optimisation flags disabled"
+	@echo "upload-x86-dfu     : upload the x86 application (USB cable & dfu-util)"
+	@echo "upload-arc-dfu     : upload the ARC application (USB cable & dfu-util)"
+	@echo "upload             : upload the ARC and x86 applications (USB cable & dfu-util)"
+	@echo "upload-x86-jtag    : upload the x86 application (JTAG & OpenOCD)"
+	@echo "upload-arc-jtag    : upload the ARC application (JTAG & OpenOCD)"
+	@echo "upload-jtag        : upload the ARC and x86 applications (JTAG & OpenOCD)"
+	@echo "upload-ble-dfu     : upload the Nordic BLE firmware (USB cable & dfu-util)"
+	@echo "debug-server       : start OpenOCD server"
+	@echo "debug-x6           : Debug x86 application with GDB"
+	@echo "debug-arc          : Debug ARC application with GDB"
 	@echo
 	@exit 1
 	
@@ -87,6 +94,11 @@ convert-sketch:
 sleepitoff:
 	sleep 10
 
+compile-debug: compile-x86 compile-debug-arc
+
+compile-debug-arc:
+	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) compile-debug
+
 upload: upload-dfu
 
 upload-dfu: upload-x86-dfu sleepitoff upload-arc-dfu
@@ -125,4 +137,4 @@ debug-x86:
 	gdb $(TOP_DIR)/out/current/firmware/quark.elf
 
 debug-arc:
-	$(CODK_ARC_DIR)/arc32/bin/arc-elf32-gdb $(ARC_PROJ_DIR)/arc-debug.elf
+	$(CODK_ARC_DIR)/arc32/bin/arc-elf32-gdb $(ARC_PROJ_DIR)/arc.elf
