@@ -78,8 +78,11 @@ compile: compile-x86 compile-arc
 compile-x86:
 	$(MAKE) setup image -C $(X86_PROJ_DIR)
 
-compile-arc:
+compile-arc: enable-debug
 	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) compile
+
+enable-debug:
+	sed -i '/#recipe.hooks.objcopy.preobjcopy.1.pattern/s/^#//g' $(CODK_ARC_DIR)/corelibs/platform.txt
 
 convert-sketch:
 	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(SKETCH_DIR) convert-sketch SKETCH=$(notdir $(SKETCH))
