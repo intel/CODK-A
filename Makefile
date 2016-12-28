@@ -37,9 +37,12 @@ help:
 	@echo "upload-x86-dfu     : upload the x86 application (USB cable & dfu-util)"
 	@echo "upload-arc-dfu     : upload the ARC application (USB cable & dfu-util)"
 	@echo "upload             : upload the ARC and x86 applications (USB cable & dfu-util)"
-	@echo "upload-x86-jtag    : upload the x86 application (JTAG & OpenOCD)"
-	@echo "upload-arc-jtag    : upload the ARC application (JTAG & OpenOCD)"
-	@echo "upload-jtag        : upload the ARC and x86 applications (JTAG & OpenOCD)"
+	@echo "upload-x86-jtag    : upload the x86 application (JTAG, OpenOCD, & Flyswatter2)"
+	@echo "upload-arc-jtag    : upload the ARC application (JTAG, OpenOCD. & Flyswatter2)"
+	@echo "upload-jtag        : upload the ARC and x86 applications (JTAG, OpenOCD, & Flyswatter2)"
+	@echo "upload-x86-jlink   : upload the x86 application (JTAG, OpenOCD, & JLink)"
+	@echo "upload-arc-jlink   : upload the ARC application (JTAG, OpenOCD. & JLink)"
+	@echo "upload-jlink       : upload the ARC and x86 applications (JTAG, OpenOCD, & JLink)"
 	@echo "upload-ble-dfu     : upload the Nordic BLE firmware (USB cable & dfu-util)"
 	@echo "debug-server       : start OpenOCD server"
 	@echo "debug-x6           : Debug x86 application with GDB"
@@ -118,6 +121,15 @@ upload-x86-jtag:
 
 upload-arc-jtag:
 	cd $(CODK_FLASHPACK_DIR) && ./flash_arc_jtag.sh $(ARC_PROJ_DIR)/arc.bin
+
+upload-jlink: upload-x86-jlink upload-arc-jlink
+
+upload-x86-jlink:
+	cd $(CODK_FLASHPACK_DIR) && ./create_flasher.sh
+	cd $(CODK_FLASHPACK_DIR) && ./flash_x86_jlink.sh
+
+upload-arc-jlink:
+	cd $(CODK_FLASHPACK_DIR) && ./flash_arc_jlink.sh $(ARC_PROJ_DIR)/arc.bin
 
 upload-ble-dfu:
 	cd $(CODK_FLASHPACK_DIR) && ./flash_ble_dfu.sh $(BLE_IMAGE)
