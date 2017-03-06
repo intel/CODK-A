@@ -37,18 +37,28 @@ help:
 	@echo "upload-x86-dfu     : upload the x86 application (USB cable & dfu-util)"
 	@echo "upload-arc-dfu     : upload the ARC application (USB cable & dfu-util)"
 	@echo "upload             : upload the ARC and x86 applications (USB cable & dfu-util)"
-	@echo "upload-x86-jtag    : upload the x86 application (JTAG, OpenOCD, & Flyswatter2)"
-	@echo "upload-arc-jtag    : upload the ARC application (JTAG, OpenOCD. & Flyswatter2)"
-	@echo "upload-jtag        : upload the ARC and x86 applications (JTAG, OpenOCD, & Flyswatter2)"
-	@echo "upload-x86-jlink   : upload the x86 application (JTAG, OpenOCD, & JLink)"
-	@echo "upload-arc-jlink   : upload the ARC application (JTAG, OpenOCD. & JLink)"
-	@echo "upload-jlink       : upload the ARC and x86 applications (JTAG, OpenOCD, & JLink)"
+	@echo "upload-x86-jtag    : upload the x86 application using OpenOCD configured  "
+	@echo "                     for a Flyswatter2 JTAG debugger"
+	@echo "upload-arc-jtag    : upload the ARC application using OpenOCD configured  "
+	@echo "                     for a Flyswatter2 JTAG debugger"
+	@echo "upload-jtag        : upload the ARC and x86 applications using OpenOCD configured "
+	@echo "                     for a Flyswatter2 JTAG debugger"
+	@echo "upload-x86-jlink   : upload the x86 application using OpenOCD configured "
+	@echo "                     for a Jlink JTAG debugger"
+	@echo "upload-arc-jlink   : upload the ARC application using OpenOCD configured "
+	@echo "                     for a Jlink JTAG debugger"
+	@echo "upload-jlink       : upload the ARC and x86 applications using OpenOCD "
+	@echo "                     configured for a Jlink JTAG debugger"
 	@echo "upload-ble-dfu     : upload the Nordic BLE firmware (USB cable & dfu-util)"
-	@echo "debug-server       : start OpenOCD server"
+	@echo "debug-server       : start OpenOCD server, configured for a Flyswatter2 "
+	@echo "                     JTAG debugger (deprecated)"
+	@echo "debug-server-jtag  : start OpenOCD server, configured for a Flyswatter2 "
+	@echo "                     JTAG debugger"
+	@echo "debug-server-jlink : start OpenOCD server, configured for a Jlink "
+	@echo "                     JTAG debugger"
 	@echo "debug-x6           : Debug x86 application with GDB"
 	@echo "debug-arc          : Debug ARC application with GDB"
 	@echo
-	@exit 1
 	
 check-root:
 	@if [ `whoami` != root ]; then echo "Please run as sudoer/root" && exit 1 ; fi
@@ -142,8 +152,13 @@ clean-x86:
 clean-arc:
 	CODK_DIR=$(CODK_DIR) $(MAKE) -C $(ARC_PROJ_DIR) clean-all
 
-debug-server:
+debug-server-jtag:
 	$(CODK_FLASHPACK_DIR)/bin/openocd.l64 -f $(CODK_FLASHPACK_DIR)/scripts/interface/ftdi/flyswatter2.cfg -f $(CODK_FLASHPACK_DIR)/scripts/board/quark_se.cfg
+
+debug-server-jlink:
+	$(CODK_FLASHPACK_DIR)/bin/openocd.l64 -f $(CODK_FLASHPACK_DIR)/scripts/interface/ftdi/jlink.cfg -f $(CODK_FLASHPACK_DIR)/scripts/board/quark_se.cfg
+
+debug-server: debug-server-jtag
 
 debug-x86:
 	gdb $(TOP_DIR)/out/current/firmware/quark.elf
